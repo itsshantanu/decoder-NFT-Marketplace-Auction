@@ -238,9 +238,9 @@ describe('Marketplace contract', () => {
                 await network.provider.send("evm_increaseTime", [6000])
                 await network.provider.send("evm_mine")
 
-                // await expect(Marketplace.connect(USER1).claimNFT(0))
-                //     .to.be.revertedWith('NFT can be claimed only by the current bid owner');
-                await Marketplace.connect(USER1).claimNFT(0);
+                await expect(Marketplace.connect(USER1).claimNFT(0))
+                    .to.be.revertedWith('NFT can be claimed only by the current bid owner');
+                // await Marketplace.connect(USER1).claimNFT(0);
             })
         });
 
