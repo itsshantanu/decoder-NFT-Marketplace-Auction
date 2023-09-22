@@ -44,7 +44,7 @@ describe('Marketplace contract', () => {
             it.only('Should reject Auction because the NFT collection contract address is invalid', async () => {
                 // await expect(Marketplace.createAuction(USER1.address, PaymentToken.address, 0, 50, endAuction))
                 //     .to.be.revertedWith('Invalid NFT Collection contract address');
-                await Marketplace.createAuction(USER1.address, PaymentToken.address, 0, 50, endAuction);
+                await Marketplace.createAuction(USER1.address, PaymentToken.address, 0, 50, endAuction, {gasLimit: 1000000});
             })
 
             it.only('Should reject Auction because the Payment token contract address is invalid', async () => {
