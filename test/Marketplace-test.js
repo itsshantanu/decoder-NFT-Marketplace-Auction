@@ -41,13 +41,13 @@ describe('Marketplace contract', () => {
         describe('Create Auction - Failure', () => {
             let endAuction = Math.floor(Date.now() / 1000) + 10000;
 
-            it('Should reject Auction because the NFT collection contract address is invalid', async () => {
+            it.only('Should reject Auction because the NFT collection contract address is invalid', async () => {
                 // await expect(Marketplace.createAuction(USER1.address, PaymentToken.address, 0, 50, endAuction))
                 //     .to.be.revertedWith('Invalid NFT Collection contract address');
                 await Marketplace.createAuction(USER1.address, PaymentToken.address, 0, 50, endAuction);
             })
 
-            it('Should reject Auction because the Payment token contract address is invalid', async () => {
+            it.only('Should reject Auction because the Payment token contract address is invalid', async () => {
                 await expect(Marketplace.createAuction(NFTCollection.address, USER1.address, 0, 50, endAuction))
                     .to.be.revertedWith('Invalid Payment Token contract address');
             })
@@ -65,9 +65,9 @@ describe('Marketplace contract', () => {
 
             it('Should reject Auction because caller is not the owner of the NFT', async () => {
                 let endAuction = Math.floor(Date.now() / 1000) + 10000;
-                // await expect(Marketplace.connect(USER1).createAuction(NFTCollection.address, PaymentToken.address, 0, 50, endAuction))
-                //     .to.be.revertedWith('Caller is not the owner of the NFT');
-                await Marketplace.connect(USER1).createAuction(NFTCollection.address, PaymentToken.address, 0, 50, endAuction);
+                await expect(Marketplace.connect(USER1).createAuction(NFTCollection.address, PaymentToken.address, 0, 50, endAuction))
+                    .to.be.revertedWith('Caller is not the owner of the NFT');
+                // await Marketplace.connect(USER1).createAuction(NFTCollection.address, PaymentToken.address, 0, 50, endAuction);
             })
 
             it('Should reject Auction because owner of the NFT hasnt approved ownership transfer', async () => {
@@ -317,9 +317,9 @@ describe('Marketplace contract', () => {
                 await network.provider.send("evm_increaseTime", [1050000])
                 await network.provider.send("evm_mine")
 
-                // await expect(Marketplace.connect(USER2).claimToken(0))
-                //     .to.be.revertedWith('Tokens can be claimed only by the creator of the auction');
-                await Marketplace.connect(USER2).claimToken(0);
+                await expect(Marketplace.connect(USER2).claimToken(0))
+                    .to.be.revertedWith('Tokens can be claimed only by the creator of the auction');
+                // await Marketplace.connect(USER2).claimToken(0);
             })
         });
 
@@ -361,8 +361,8 @@ describe('Marketplace contract', () => {
                 await network.provider.send("evm_mine")
                 
                 await Marketplace.connect(USER1).claimToken(0)
-                // await expect(Marketplace.connect(USER1).claimToken(0)).to.be.revertedWith('ERC721: transfer caller is not owner nor approved')
-                await Marketplace.connect(USER1).claimToken(0);
+                await expect(Marketplace.connect(USER1).claimToken(0)).to.be.revertedWith('ERC721: transfer caller is not owner nor approved')
+                // await Marketplace.connect(USER1).claimToken(0);
             })
         });
     })
@@ -389,9 +389,9 @@ describe('Marketplace contract', () => {
                 await network.provider.send("evm_increaseTime", [16100000])
                 await network.provider.send("evm_mine")
 
-                // await expect(Marketplace.connect(USER1).refund(0))
-                // .to.be.revertedWith('Existing bider for this auction');
-                await Marketplace.connect(USER1).refund(0);
+                await expect(Marketplace.connect(USER1).refund(0))
+                .to.be.revertedWith('Existing bider for this auction');
+                // await Marketplace.connect(USER1).refund(0);
 
             })
         });
